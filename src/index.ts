@@ -1,4 +1,4 @@
-import { defineIntegration, IntegrationValidationError } from '@weldable/integration-core'
+import { defineIntegration, IntegrationValidationError, fakeId, fakeUrl } from '@weldable/integration-core'
 import { docsToMarkdown, markdownToDocsRequests, type DocsDocument } from './markdown'
 import { extractPlainText, countOccurrences, findMatchContexts } from './plain-text'
 
@@ -59,6 +59,13 @@ export default defineIntegration({
         { name: 'endLine', type: 'number', description: 'Last line number included in this slice (1-indexed).' },
         { name: 'totalLines', type: 'number', description: 'Total number of lines in the document. Paginate with offset: endLine + 1 if endLine < totalLines.' },
       ],
+      mockExecute: async (_args, _ctx) => ({
+        title: 'Mock Document',
+        markdown: '    1→# Mock Document\n    2→\n    3→This is mock content for workflow authoring.',
+        startLine: 1,
+        endLine: 3,
+        totalLines: 3,
+      }),
       execute: async (args, ctx) => {
         const documentId = requireString(args, 'documentId')
         const offset = optionalPositiveInt(args.offset, 1)
@@ -121,6 +128,11 @@ export default defineIntegration({
         { name: 'title', type: 'string', description: 'Title of the created document.' },
         { name: 'url', type: 'string', description: 'Shareable web URL of the document.' },
       ],
+      mockExecute: async (args, ctx) => {
+        const documentId = fakeId(ctx.seed, 44)
+        const title = String(args.title ?? 'Mock Document')
+        return { documentId, title, url: `https://docs.google.com/document/d/${documentId}/edit` }
+      },
       execute: async (args, ctx) => {
         const title = requireString(args, 'title')
         const content = typeof args.content === 'string' ? args.content : ''
