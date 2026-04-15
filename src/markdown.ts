@@ -77,8 +77,12 @@ interface DocsParagraph {
 
 interface DocsContentElement {
   paragraph?: DocsParagraph
-  table?: unknown
-  tableOfContents?: unknown
+  table?: {
+    tableRows?: Array<{
+      tableCells?: Array<{ content?: DocsContentElement[] }>
+    }>
+  }
+  tableOfContents?: { content?: DocsContentElement[] }
   sectionBreak?: unknown
 }
 

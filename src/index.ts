@@ -1,6 +1,6 @@
 import { defineIntegration, IntegrationValidationError, fakeId, fakeUrl } from '@weldable/integration-core'
-import { docsToMarkdown, markdownToDocsRequests, type DocsDocument } from './markdown'
-import { extractPlainText, countOccurrences, findMatchContexts } from './plain-text'
+import { docsToMarkdown, markdownToDocsRequests, type DocsDocument } from './markdown.js'
+import { extractPlainText, countOccurrences, findMatchContexts } from './plain-text.js'
 
 export default defineIntegration({
   id: 'google_docs',
